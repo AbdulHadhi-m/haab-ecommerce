@@ -34,7 +34,7 @@ export default function AdminCategoriesPage() {
     resolver: zodResolver(categorySchema),
   });
 
-  const categories = data?.data ?? [];
+  const categories = Array.isArray(data) ? data : data?.data ?? [];
 
   async function onCreate(values: CategoryForm) {
     setSubmitting(true);
@@ -43,7 +43,10 @@ export default function AdminCategoriesPage() {
       toast.success("Category created");
       reset({ name: "" });
       queryClient.invalidateQueries({ queryKey: ["categories"] });
-    } catch { toast.error("Failed to create category"); }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to create category";
+      toast.error(message);
+    }
     finally { setSubmitting(false); }
   }
 
@@ -56,7 +59,10 @@ export default function AdminCategoriesPage() {
       toast.success("Category updated");
       setEditingId(null);
       queryClient.invalidateQueries({ queryKey: ["categories"] });
-    } catch { toast.error("Failed to update category"); }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to update category";
+      toast.error(message);
+    }
     finally { setSubmitting(false); }
   }
 
@@ -66,7 +72,10 @@ export default function AdminCategoriesPage() {
       toast.success("Category deleted");
       setDeleteId(null);
       queryClient.invalidateQueries({ queryKey: ["categories"] });
-    } catch { toast.error("Failed to delete category"); }
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to delete category";
+      toast.error(message);
+    }
   }
 
   const columns: Column<Category>[] = [

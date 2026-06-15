@@ -13,7 +13,7 @@ export const createCategorySchema = z.object({
       .trim()
       .optional()
       .default(""),
-    image: z.string().url("Image must be a valid URL").optional().or(z.literal("")),
+    image: z.string().optional().default(""),
     isActive: z.boolean().optional().default(true),
   }),
 });
@@ -31,7 +31,7 @@ export const updateCategorySchema = z.object({
       .max(500, "Description must not exceed 500 characters")
       .trim()
       .optional(),
-    image: z.string().url("Image must be a valid URL").optional().or(z.literal("")),
+    image: z.string().optional(),
     isActive: z.boolean().optional(),
   }),
 });

@@ -49,7 +49,7 @@ export function ProductFilters() {
     [pathname, searchParams, router],
   );
 
-  const categories = categoriesData?.data ?? [];
+  const categories = Array.isArray(categoriesData) ? categoriesData : categoriesData?.data ?? [];
 
   const hasActiveFilters = !!(currentSearch || currentCategory || currentMinPrice || currentMaxPrice);
 

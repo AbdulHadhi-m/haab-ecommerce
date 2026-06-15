@@ -57,7 +57,7 @@ export default function NewProductPage() {
     }
   }
 
-  const categories = categoriesData?.data ?? [];
+  const categories = Array.isArray(categoriesData) ? categoriesData : categoriesData?.data ?? [];
 
   return (
     <div>

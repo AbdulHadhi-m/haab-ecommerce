@@ -83,7 +83,7 @@ export default function EditProductPage() {
   if (productLoading) return <ProductFormSkeleton />;
   if (!productData?.data) return <p className="text-sm text-red-500">Product not found</p>;
 
-  const categories = categoriesData?.data ?? [];
+  const categories = Array.isArray(categoriesData) ? categoriesData : categoriesData?.data ?? [];
 
   return (
     <div>
