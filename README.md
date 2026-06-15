@@ -1,6 +1,6 @@
-# ADIWEAR — Premium Sportswear Ecommerce
+# HAAB — Premium Sportswear Ecommerce
 
-A production-grade, Adidas-inspired ecommerce platform built with Next.js 15, Express/TypeScript, and MongoDB Atlas.
+A production-grade, ecommerce platform built with Next.js 15, Express/TypeScript, and MongoDB Atlas.
 
 ## Tech Stack
 
