@@ -3,6 +3,7 @@ import { Inter, Playfair_Display } from "next/font/google";
 import { QueryProvider, ThemeProvider, ToastProvider } from "@/providers";
 import { Navbar } from "@/shared/components/layout/navbar";
 import { Footer } from "@/shared/components/layout/footer";
+import { CartDrawer } from "@/features/cart/components/cart-drawer";
 import { SITE } from "@/constants";
 import "@/styles/globals.css";
 
@@ -50,6 +51,7 @@ export default function RootLayout({
             <Navbar />
             <main className="flex-1">{children}</main>
             <Footer />
+            <CartDrawer />
             <ToastProvider />
           </QueryProvider>
         </ThemeProvider>

@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Heart } from "lucide-react";
 import { cn } from "@/shared/lib/utils";
 import { formatPrice } from "@/shared/lib/utils";
+import { WishlistButton } from "@/features/wishlist/components/wishlist-button";
 
 interface ProductCardImage {
   url: string;
@@ -9,6 +9,7 @@ interface ProductCardImage {
 }
 
 interface ProductCardProps {
+  _id: string;
   slug: string;
   name: string;
   price: number;
@@ -19,6 +20,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({
+  _id,
   slug,
   name,
   price,
@@ -37,16 +39,17 @@ export function ProductCard({
           alt={name}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <button
-          className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm transition-colors hover:bg-white"
-          aria-label="Add to wishlist"
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
+        <WishlistButton
+          product={{
+            productId: _id,
+            slug,
+            name,
+            image: imageUrl,
+            price,
+            discountPrice: discountPrice ?? null,
           }}
-        >
-          <Heart className="h-4 w-4" />
-        </button>
+          className="absolute right-3 top-3"
+        />
         {discountPrice && (
           <span className="absolute left-3 top-3 bg-black px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-white">
             Sale

@@ -1,14 +1,6 @@
 import { create } from "zustand";
-
-interface CartItem {
-  productId: string;
-  name: string;
-  price: number;
-  image: string;
-  size: string;
-  color: string;
-  quantity: number;
-}
+import { persist } from "zustand/middleware";
+import type { CartItem } from "../types";
 
 interface CartState {
   items: CartItem[];
@@ -17,7 +9,9 @@ interface CartState {
 
 interface CartActions {
   addItem: (item: CartItem) => void;
-  removeItem: (productId: string, size: string, color: string) => void;
+  removeItem: (productId: string) => void;
+  increaseQuantity: (productId: string) => void;
+  decreaseQuantity: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
   setIsOpen: (isOpen: boolean) => void;
@@ -30,42 +24,67 @@ const initialState: CartState = {
   isOpen: false,
 };
 
-export const useCartStore = create<CartStore>((set) => ({
-  ...initialState,
-  addItem: (item) =>
-    set((state) => {
-      const existing = state.items.find(
-        (i) =>
-          i.productId === item.productId &&
-          i.size === item.size &&
-          i.color === item.color,
-      );
-      if (existing) {
-        return {
+export const useCartStore = create<CartStore>()(
+  persist(
+    (set) => ({
+      ...initialState,
+
+      addItem: (item) =>
+        set((state) => {
+          const existing = state.items.find(
+            (i) => i.productId === item.productId && i.slug === item.slug,
+          );
+          if (existing) {
+            return {
+              items: state.items.map((i) =>
+                i.productId === item.productId && i.slug === item.slug
+                  ? { ...i, quantity: Math.min(i.quantity + item.quantity, i.stock) }
+                  : i,
+              ),
+            };
+          }
+          return { items: [...state.items, { ...item, quantity: Math.min(item.quantity, item.stock) }] };
+        }),
+
+      removeItem: (productId) =>
+        set((state) => ({
+          items: state.items.filter((i) => i.productId !== productId),
+        })),
+
+      increaseQuantity: (productId) =>
+        set((state) => ({
           items: state.items.map((i) =>
-            i.productId === item.productId &&
-            i.size === item.size &&
-            i.color === item.color
-              ? { ...i, quantity: i.quantity + item.quantity }
+            i.productId === productId && i.quantity < i.stock
+              ? { ...i, quantity: i.quantity + 1 }
               : i,
           ),
-        };
-      }
-      return { items: [...state.items, item] };
+        })),
+
+      decreaseQuantity: (productId) =>
+        set((state) => ({
+          items: state.items.map((i) =>
+            i.productId === productId && i.quantity > 1
+              ? { ...i, quantity: i.quantity - 1 }
+              : i,
+          ),
+        })),
+
+      updateQuantity: (productId, quantity) =>
+        set((state) => ({
+          items: state.items.map((i) =>
+            i.productId === productId
+              ? { ...i, quantity: Math.max(1, Math.min(quantity, i.stock)) }
+              : i,
+          ),
+        })),
+
+      clearCart: () => set({ items: [] }),
+
+      setIsOpen: (isOpen) => set({ isOpen }),
     }),
-  removeItem: (productId, size, color) =>
-    set((state) => ({
-      items: state.items.filter(
-        (i) =>
-          !(i.productId === productId && i.size === size && i.color === color),
-      ),
-    })),
-  updateQuantity: (productId, quantity) =>
-    set((state) => ({
-      items: state.items.map((i) =>
-        i.productId === productId ? { ...i, quantity } : i,
-      ),
-    })),
-  clearCart: () => set({ items: [] }),
-  setIsOpen: (isOpen) => set({ isOpen }),
-}));
+    {
+      name: "adiwear-cart",
+      partialize: (state) => ({ items: state.items }),
+    },
+  ),
+);

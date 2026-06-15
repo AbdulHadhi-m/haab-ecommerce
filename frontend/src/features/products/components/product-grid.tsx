@@ -17,6 +17,7 @@ export function ProductGrid({ products }: ProductGridProps) {
         return (
           <ProductCard
             key={product._id}
+            _id={product._id}
             slug={product.slug}
             name={product.name}
             price={product.price}

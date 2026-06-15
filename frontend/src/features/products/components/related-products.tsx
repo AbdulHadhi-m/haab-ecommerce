@@ -34,6 +34,7 @@ export function RelatedProducts({ slug }: RelatedProductsProps) {
               return (
                 <ProductCard
                   key={product._id}
+                  _id={product._id}
                   slug={product.slug}
                   name={product.name}
                   price={product.price}

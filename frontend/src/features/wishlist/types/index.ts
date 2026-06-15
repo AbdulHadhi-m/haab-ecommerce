@@ -1,10 +1,8 @@
-export interface CartItem {
+export interface WishlistItem {
   productId: string;
   slug: string;
   name: string;
   image: string;
   price: number;
   discountPrice: number | null;
-  quantity: number;
-  stock: number;
 }

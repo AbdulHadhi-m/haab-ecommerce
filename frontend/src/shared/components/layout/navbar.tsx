@@ -2,13 +2,18 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, Search, User, ShoppingBag } from "lucide-react";
+import { Menu, X, Search, User, ShoppingBag, Heart } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { SITE, NAV_CATEGORIES } from "@/constants";
 import { cn } from "@/shared/lib/utils";
+import { useCartStore } from "@/features/cart/store";
+import { useWishlistStore } from "@/features/wishlist/store";
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const cartItemCount = useCartStore((s) => s.items.reduce((sum, item) => sum + item.quantity, 0));
+  const wishlistCount = useWishlistStore((s) => s.items.length);
+  const openCart = useCartStore((s) => s.setIsOpen);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border bg-background">
@@ -42,14 +47,31 @@ export function Navbar() {
             <button className="hidden sm:flex items-center" aria-label="Search">
               <Search className="h-5 w-5" />
             </button>
+
             <Link href="/auth/login" aria-label="Account">
               <User className="h-5 w-5" />
             </Link>
-            <Link href="/cart" className="relative" aria-label="Cart">
+
+            <button
+              onClick={() => openCart(true)}
+              className="relative"
+              aria-label="Open cart"
+            >
               <ShoppingBag className="h-5 w-5" />
-              <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
-                0
-              </span>
+              {cartItemCount > 0 && (
+                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-brand-900 text-[10px] font-bold text-white">
+                  {cartItemCount > 9 ? "9+" : cartItemCount}
+                </span>
+              )}
+            </button>
+
+            <Link href="/wishlist" className="relative" aria-label="Wishlist">
+              <Heart className="h-5 w-5" />
+              {wishlistCount > 0 && (
+                <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-brand-900 text-[10px] font-bold text-white">
+                  {wishlistCount > 9 ? "9+" : wishlistCount}
+                </span>
+              )}
             </Link>
           </div>
         </div>

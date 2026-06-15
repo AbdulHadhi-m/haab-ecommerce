@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { Heart, ShoppingBag, Star } from "lucide-react";
+import { Star, ShoppingBag } from "lucide-react";
 import { Button } from "@/shared/components/ui/button";
 import { formatPrice, cn } from "@/shared/lib/utils";
+import { useCartStore } from "@/features/cart/store";
+import { WishlistButton } from "@/features/wishlist/components/wishlist-button";
+import { toast } from "sonner";
 import type { Product } from "../types";
 
 interface ProductDetailInfoProps {
@@ -11,7 +13,8 @@ interface ProductDetailInfoProps {
 }
 
 export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
-  const [isWishlisted, setIsWishlisted] = useState(false);
+  const addToCart = useCartStore((s) => s.addItem);
+  const setIsCartOpen = useCartStore((s) => s.setIsOpen);
 
   const categoryName =
     typeof product.category === "object" && product.category !== null
@@ -19,6 +22,25 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
       : "";
 
   const hasDiscount = product.discountPrice !== null && product.discountPrice < product.price;
+  const displayPrice = product.discountPrice ?? product.price;
+  const mainImage = product.images[0]?.url ?? "";
+
+  function handleAddToCart() {
+    addToCart({
+      productId: product._id,
+      slug: product.slug,
+      name: product.name,
+      image: mainImage,
+      price: product.price,
+      discountPrice: product.discountPrice,
+      quantity: 1,
+      stock: product.stock,
+    });
+    toast.success("Added to cart", {
+      description: `${product.name} has been added to your cart.`,
+    });
+    setIsCartOpen(true);
+  }
 
   return (
     <div className="space-y-6">
@@ -85,19 +107,22 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
           size="lg"
           className="flex-1 uppercase tracking-widest"
           disabled={product.stock === 0}
+          onClick={handleAddToCart}
         >
           <ShoppingBag className="mr-2 h-5 w-5" />
           Add to Cart
         </Button>
-        <Button
-          variant="white"
-          size="lg"
-          className="uppercase tracking-widest"
-          onClick={() => setIsWishlisted(!isWishlisted)}
-        >
-          <Heart className={cn("mr-2 h-5 w-5", isWishlisted && "fill-current")} />
-          {isWishlisted ? "Wishlisted" : "Wishlist"}
-        </Button>
+        <WishlistButton
+          product={{
+            productId: product._id,
+            slug: product.slug,
+            name: product.name,
+            image: mainImage,
+            price: product.price,
+            discountPrice: product.discountPrice,
+          }}
+          variant="full"
+        />
       </div>
     </div>
   );
