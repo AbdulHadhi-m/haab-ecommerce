@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface User {
+export interface User {
   id: string;
   name: string;
   email: string;
@@ -15,9 +15,8 @@ interface AuthState {
 
 interface AuthActions {
   setUser: (user: User | null) => void;
-  setIsAuthenticated: (value: boolean) => void;
   setIsLoading: (value: boolean) => void;
-  reset: () => void;
+  logout: () => void;
 }
 
 type AuthStore = AuthState & AuthActions;
@@ -25,13 +24,12 @@ type AuthStore = AuthState & AuthActions;
 const initialState: AuthState = {
   user: null,
   isAuthenticated: false,
-  isLoading: false,
+  isLoading: true,
 };
 
 export const useAuthStore = create<AuthStore>((set) => ({
   ...initialState,
-  setUser: (user) => set({ user, isAuthenticated: !!user }),
-  setIsAuthenticated: (isAuthenticated) => set({ isAuthenticated }),
+  setUser: (user) => set({ user, isAuthenticated: !!user, isLoading: false }),
   setIsLoading: (isLoading) => set({ isLoading }),
-  reset: () => set(initialState),
+  logout: () => set({ user: null, isAuthenticated: false, isLoading: false }),
 }));

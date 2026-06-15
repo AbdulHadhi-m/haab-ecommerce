@@ -1,5 +1,19 @@
 import axios from "axios";
 
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: (token: string) => void;
+  reject: (error: unknown) => void;
+}> = [];
+
+function processQueue(error: unknown, token: string | null) {
+  failedQueue.forEach((promise) => {
+    if (error) promise.reject(error);
+    else promise.resolve(token!);
+  });
+  failedQueue = [];
+}
+
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: { "Content-Type": "application/json" },
@@ -8,9 +22,11 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-  const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
   }
   return config;
 });
@@ -18,10 +34,53 @@ apiClient.interceptors.request.use((config) => {
 apiClient.interceptors.response.use(
   (response) => response,
   async (error) => {
-    if (error.response?.status === 401 && typeof window !== "undefined") {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+    const originalRequest = error.config;
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      typeof window !== "undefined"
+    ) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return apiClient(originalRequest);
+          })
+          .catch((err) => Promise.reject(err));
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        const { data } = await axios.post(
+          `${apiClient.defaults.baseURL}/auth/refresh-token`,
+          {},
+          { withCredentials: true },
+        );
+
+        const newToken: string = data.accessToken;
+        localStorage.setItem("accessToken", newToken);
+        processQueue(null, newToken);
+
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError, null);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        if (typeof window !== "undefined") {
+          window.location.href = "/login";
+        }
+        return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
+      }
     }
+
     return Promise.reject(error);
   },
 );
