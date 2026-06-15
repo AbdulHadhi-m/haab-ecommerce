@@ -16,12 +16,13 @@ interface ReviewOrderProps {
   shipping: ShippingFormData;
   payment: PaymentMethodType;
   items: CartItem[];
+  discount?: number;
   onPlaceOrder: () => void;
   onBack: () => void;
   isPending: boolean;
 }
 
-export function ReviewOrder({ shipping, payment, items, onPlaceOrder, onBack, isPending }: ReviewOrderProps) {
+export function ReviewOrder({ shipping, payment, items, discount = 0, onPlaceOrder, onBack, isPending }: ReviewOrderProps) {
   return (
     <div className="space-y-8">
       <div className="grid gap-8 sm:grid-cols-2">
@@ -53,7 +54,7 @@ export function ReviewOrder({ shipping, payment, items, onPlaceOrder, onBack, is
         <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-brand-600">
           Order Summary
         </h3>
-        <OrderSummary items={items} />
+        <OrderSummary items={items} discount={discount} />
       </div>
 
       <div className="flex justify-between pt-4">

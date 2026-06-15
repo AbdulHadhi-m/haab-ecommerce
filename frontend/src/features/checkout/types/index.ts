@@ -23,4 +23,6 @@ export interface CreateOrderPayload {
   }[];
   shippingAddress: ShippingAddress;
   paymentMethod: PaymentMethod;
+  couponCode?: string;
+  discount?: number;
 }

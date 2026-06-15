@@ -1,8 +1,9 @@
 "use client";
 
-import { Star, ShoppingBag } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
+import { StarRating } from "@/features/reviews/components/star-rating";
 import { Button } from "@/shared/components/ui/button";
-import { formatPrice, cn } from "@/shared/lib/utils";
+import { formatPrice } from "@/shared/lib/utils";
 import { useCartStore } from "@/features/cart/store";
 import { WishlistButton } from "@/features/wishlist/components/wishlist-button";
 import { toast } from "sonner";
@@ -52,22 +53,17 @@ export function ProductDetailInfo({ product }: ProductDetailInfoProps) {
 
       <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{product.name}</h1>
 
-      {product.rating > 0 && (
-        <div className="flex items-center gap-2">
-          <div className="flex items-center">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <Star
-                key={i}
-                className={cn(
-                  "h-4 w-4",
-                  i < Math.round(product.rating)
-                    ? "fill-brand-900 text-brand-900"
-                    : "fill-brand-200 text-brand-200",
-                )}
-              />
-            ))}
-          </div>
-          <span className="text-sm text-brand-500">{product.rating.toFixed(1)}</span>
+      {(product.ratings?.average ?? product.rating) > 0 && (
+        <div className="flex items-center gap-3">
+          <StarRating value={Math.round(product.ratings?.average ?? product.rating)} size="md" readonly />
+          <span className="text-sm text-brand-500">
+            {(product.ratings?.average ?? product.rating).toFixed(1)}
+          </span>
+          {product.ratings?.count !== undefined && (
+            <span className="text-sm text-brand-400">
+              ({product.ratings.count} {product.ratings.count === 1 ? "review" : "reviews"})
+            </span>
+          )}
         </div>
       )}
 

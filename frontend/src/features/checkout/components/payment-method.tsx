@@ -8,8 +8,8 @@ import type { PaymentMethod as PaymentMethodType } from "../types";
 
 const PAYMENT_OPTIONS: { value: PaymentMethodType; label: string; description: string; available: boolean }[] = [
   { value: "cod", label: "Cash on Delivery", description: "Pay when you receive your order", available: true },
-  { value: "razorpay", label: "Razorpay", description: "Pay with UPI, card, or net banking", available: false },
-  { value: "stripe", label: "Stripe", description: "Pay with credit or debit card", available: false },
+  { value: "razorpay", label: "Razorpay", description: "Pay with UPI, card, or net banking", available: true },
+  { value: "stripe", label: "Stripe", description: "Pay with credit or debit card", available: true },
 ];
 
 interface PaymentMethodProps {

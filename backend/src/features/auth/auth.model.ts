@@ -1,8 +1,24 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import { IUser } from "./interfaces";
+import { IAddress } from "@/features/user/interfaces";
 
 const SALT_ROUNDS = 12;
+
+const addressSchema = new Schema<IAddress>(
+  {
+    label: { type: String, required: true, trim: true },
+    firstName: { type: String, required: true, trim: true },
+    lastName: { type: String, required: true, trim: true },
+    address: { type: String, required: true, trim: true },
+    city: { type: String, required: true, trim: true },
+    state: { type: String, required: true, trim: true },
+    zipCode: { type: String, required: true, trim: true },
+    phone: { type: String, required: true, trim: true },
+    isDefault: { type: Boolean, default: false },
+  },
+  { _id: true },
+);
 
 const userSchema = new Schema<IUser>(
   {
@@ -12,6 +28,14 @@ const userSchema = new Schema<IUser>(
       trim: true,
       minlength: [2, "Name must be at least 2 characters"],
       maxlength: [50, "Name must not exceed 50 characters"],
+    },
+    phone: {
+      type: String,
+      trim: true,
+    },
+    addresses: {
+      type: [addressSchema],
+      default: [],
     },
     email: {
       type: String,

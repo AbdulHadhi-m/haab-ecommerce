@@ -41,4 +41,26 @@ export const API_ROUTES = {
     ADMIN_ALL: "/orders/admin/all",
     UPDATE_STATUS: (id: string) => `/orders/${id}/status`,
   },
+  USERS: {
+    PROFILE: "/users/profile",
+    PASSWORD: "/users/password",
+    ADDRESSES: "/users/addresses",
+    ADDRESS_BY_ID: (id: string) => `/users/addresses/${id}`,
+    ADDRESS_DEFAULT: (id: string) => `/users/addresses/${id}/default`,
+  },
+  REVIEWS: {
+    PRODUCT: (productId: string) => `/reviews/products/${productId}`,
+    BASE: "/reviews",
+    BY_ID: (id: string) => `/reviews/${id}`,
+    MY: "/reviews/my-reviews",
+  },
+  COUPONS: {
+    VALIDATE: "/coupons/validate",
+    BASE: "/coupons",
+    BY_ID: (id: string) => `/coupons/${id}`,
+  },
+  PAYMENTS: {
+    CREATE_INTENT: "/payments/create-payment-intent",
+    VERIFY: "/payments/verify",
+  },
 } as const;

@@ -4,6 +4,7 @@ import { NotFoundError, BadRequestError, ForbiddenError } from "@/shared/errors"
 import { Product } from "@/features/products/product.model";
 import { CreateOrderInput } from "../types";
 import { IOrder } from "../interfaces";
+import { emailService } from "@/features/email/services";
 
 function generateOrderNumber(): string {
   const now = new Date();
@@ -91,6 +92,18 @@ export const orderService = {
       } as IOrder;
 
       const order = await orderRepository.create(orderData);
+
+      try {
+        await emailService.sendOrderConfirmation(
+          input.shippingAddress.email,
+          order.orderNumber,
+          input.items,
+          totalAmount,
+        );
+      } catch (emailError) {
+        console.error("Failed to send order confirmation email:", emailError);
+      }
+
       return order;
     } catch (error) {
       for (const productId of decremented) {
@@ -133,6 +146,19 @@ export const orderService = {
     const order = await orderRepository.updateStatus(id, orderStatus);
     if (!order) {
       throw new NotFoundError("Order not found");
+    }
+
+    try {
+      const updatedOrder = await orderRepository.findById(id);
+      if (updatedOrder) {
+        await emailService.sendOrderStatusUpdate(
+          updatedOrder.shippingAddress.email,
+          updatedOrder.orderNumber,
+          orderStatus,
+        );
+      }
+    } catch (emailError) {
+      console.error("Failed to send status update email:", emailError);
     }
 
     return order;

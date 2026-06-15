@@ -1,12 +1,13 @@
 import { create } from "zustand";
+import type { UserProfile } from "../types";
 
 interface UserState {
-  profile: null;
+  profile: UserProfile | null;
   isLoading: boolean;
 }
 
 interface UserActions {
-  setProfile: (profile: null) => void;
+  setProfile: (profile: UserProfile | null) => void;
   setIsLoading: (isLoading: boolean) => void;
   reset: () => void;
 }

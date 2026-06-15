@@ -79,9 +79,11 @@ export const authService = {
       id: user._id.toString(),
       name: user.name,
       email: user.email,
+      phone: user.phone,
       role: user.role,
       isActive: user.isActive,
       lastLogin: user.lastLogin,
+      addresses: user.addresses,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };

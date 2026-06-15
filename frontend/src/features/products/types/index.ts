@@ -25,6 +25,10 @@ export interface Product {
   category: string | Category;
   featured: boolean;
   rating: number;
+  ratings?: {
+    average: number;
+    count: number;
+  };
   isActive: boolean;
   createdAt: string;
   updatedAt: string;

@@ -81,6 +81,16 @@ const productSchema = new Schema<IProduct>(
       min: [0, "Rating cannot be negative"],
       max: [5, "Rating cannot exceed 5"],
     },
+    ratings: {
+      type: new Schema(
+        {
+          average: { type: Number, default: 0 },
+          count: { type: Number, default: 0 },
+        },
+        { _id: false },
+      ),
+      default: { average: 0, count: 0 },
+    },
     isActive: {
       type: Boolean,
       default: true,

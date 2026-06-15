@@ -3,16 +3,18 @@ import type { CartItem } from "@/features/cart/types";
 
 interface OrderSummaryProps {
   items: CartItem[];
+  discount?: number;
 }
 
-export function OrderSummary({ items }: OrderSummaryProps) {
+export function OrderSummary({ items, discount = 0 }: OrderSummaryProps) {
   const subtotal = items.reduce(
     (sum, item) => sum + (item.discountPrice ?? item.price) * item.quantity,
     0,
   );
   const shippingFee = subtotal >= 100 ? 0 : 9.99;
   const tax = Math.round(subtotal * 0.08 * 100) / 100;
-  const total = Math.round((subtotal + shippingFee + tax) * 100) / 100;
+  const afterDiscount = Math.max(0, subtotal - discount);
+  const total = Math.round((afterDiscount + shippingFee + tax) * 100) / 100;
 
   return (
     <div className="space-y-4">
@@ -38,6 +40,12 @@ export function OrderSummary({ items }: OrderSummaryProps) {
           <span className="text-brand-600">Subtotal</span>
           <span>{formatPrice(subtotal)}</span>
         </div>
+        {discount > 0 && (
+          <div className="flex justify-between text-green-700">
+            <span>Discount</span>
+            <span>-{formatPrice(discount)}</span>
+          </div>
+        )}
         <div className="flex justify-between">
           <span className="text-brand-600">Shipping</span>
           <span>{shippingFee === 0 ? <span className="text-green-700">Free</span> : formatPrice(shippingFee)}</span>

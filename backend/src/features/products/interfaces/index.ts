@@ -6,6 +6,11 @@ export interface IProductImage {
   publicId: string;
 }
 
+export interface IProductRatings {
+  average: number;
+  count: number;
+}
+
 export interface IProduct extends IBaseDocument {
   name: string;
   slug: string;
@@ -18,5 +23,6 @@ export interface IProduct extends IBaseDocument {
   category: Types.ObjectId;
   featured: boolean;
   rating: number;
+  ratings: IProductRatings;
   isActive: boolean;
 }
