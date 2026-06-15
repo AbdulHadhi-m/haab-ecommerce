@@ -3,6 +3,7 @@ import { authRoutes } from "@/features/auth/routes";
 import { categoryRoutes } from "@/features/categories/routes";
 import { productRoutes } from "@/features/products/routes";
 import { uploadRoutes } from "@/features/uploads/routes";
+import { orderRoutes } from "@/features/orders/routes";
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use("/auth", authRoutes);
 router.use("/categories", categoryRoutes);
 router.use("/products", productRoutes);
 router.use("/uploads", uploadRoutes);
+router.use("/orders", orderRoutes);
 
 export { router as routes };

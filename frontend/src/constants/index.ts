@@ -34,4 +34,11 @@ export const API_ROUTES = {
     IMAGES: "/uploads/images",
     DELETE: (publicId: string) => `/uploads/${publicId}`,
   },
+  ORDERS: {
+    CREATE: "/orders",
+    MY_ORDERS: "/orders/my-orders",
+    BY_ID: (id: string) => `/orders/${id}`,
+    ADMIN_ALL: "/orders/admin/all",
+    UPDATE_STATUS: (id: string) => `/orders/${id}/status`,
+  },
 } as const;

@@ -1,18 +1,26 @@
 export interface ShippingAddress {
-  firstName: string;
-  lastName: string;
+  fullName: string;
+  phone: string;
+  email: string;
   address: string;
   city: string;
   state: string;
-  zipCode: string;
-  phone: string;
+  postalCode: string;
+  country: string;
 }
 
-export interface PaymentInfo {
-  cardNumber: string;
-  expiryDate: string;
-  cvv: string;
-  cardholderName: string;
-}
+export type PaymentMethod = "cod" | "razorpay" | "stripe";
 
-export type CheckoutStep = "shipping" | "payment" | "review" | "confirmation";
+export type CheckoutStep = "shipping" | "payment" | "review";
+
+export interface CreateOrderPayload {
+  items: {
+    productId: string;
+    name: string;
+    image: string;
+    price: number;
+    quantity: number;
+  }[];
+  shippingAddress: ShippingAddress;
+  paymentMethod: PaymentMethod;
+}

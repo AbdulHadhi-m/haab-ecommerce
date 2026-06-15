@@ -1,23 +1,26 @@
-export interface CreateOrderInput {
-  items: OrderItemInput[];
-  shippingAddress: ShippingAddressInput;
-  paymentMethod: string;
-}
-
-export interface OrderItemInput {
+export interface CreateOrderItemInput {
   productId: string;
-  quantity: number;
-  size: string;
-  color: string;
+  name: string;
+  image: string;
   price: number;
+  quantity: number;
 }
 
-export interface ShippingAddressInput {
-  firstName: string;
-  lastName: string;
-  address: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  phone: string;
+export interface CreateOrderInput {
+  items: CreateOrderItemInput[];
+  shippingAddress: {
+    fullName: string;
+    phone: string;
+    email: string;
+    address: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+  };
+  paymentMethod: "cod" | "razorpay" | "stripe";
+}
+
+export interface UpdateOrderStatusInput {
+  orderStatus: string;
 }

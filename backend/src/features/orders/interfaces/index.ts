@@ -1,31 +1,46 @@
 import { IBaseDocument } from "@/shared/interfaces";
+import { Types } from "mongoose";
 
-interface OrderItem {
-  productId: string;
+export interface IOrderItem {
+  productId: Types.ObjectId;
   name: string;
-  quantity: number;
-  size: string;
-  color: string;
-  price: number;
   image: string;
+  price: number;
+  quantity: number;
 }
 
-interface ShippingAddress {
-  firstName: string;
-  lastName: string;
+export interface IShippingAddress {
+  fullName: string;
+  phone: string;
+  email: string;
   address: string;
   city: string;
   state: string;
-  zipCode: string;
-  phone: string;
+  postalCode: string;
+  country: string;
 }
 
-export interface IOrder extends IBaseDocument {
-  userId: string;
-  items: OrderItem[];
-  shippingAddress: ShippingAddress;
+export interface IPricing {
+  subtotal: number;
+  shippingFee: number;
+  tax: number;
   totalAmount: number;
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
-  paymentMethod: string;
-  paymentStatus: "pending" | "paid" | "failed";
+}
+
+export interface IPayment {
+  method: "cod" | "razorpay" | "stripe";
+  status: "pending" | "paid" | "failed";
+  transactionId?: string;
+}
+
+export type OrderStatus = "pending" | "confirmed" | "processing" | "shipped" | "delivered" | "cancelled";
+
+export interface IOrder extends IBaseDocument {
+  customer: Types.ObjectId;
+  items: IOrderItem[];
+  shippingAddress: IShippingAddress;
+  pricing: IPricing;
+  payment: IPayment;
+  orderStatus: OrderStatus;
+  orderNumber: string;
 }

@@ -20,7 +20,7 @@ const initialState: CheckoutState = {
 export const useCheckoutStore = create<CheckoutStore>((set) => ({
   ...initialState,
   nextStep: () =>
-    set((state) => ({ currentStep: Math.min(state.currentStep + 1, 3) })),
+    set((state) => ({ currentStep: Math.min(state.currentStep + 1, 2) })),
   prevStep: () =>
     set((state) => ({ currentStep: Math.max(state.currentStep - 1, 0) })),
   goToStep: (currentStep) => set({ currentStep }),

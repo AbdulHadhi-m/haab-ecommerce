@@ -48,7 +48,7 @@ export function Navbar() {
               <Search className="h-5 w-5" />
             </button>
 
-            <Link href="/auth/login" aria-label="Account">
+            <Link href="/account/orders" aria-label="Account">
               <User className="h-5 w-5" />
             </Link>
 
