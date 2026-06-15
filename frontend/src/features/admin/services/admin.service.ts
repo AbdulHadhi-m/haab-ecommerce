@@ -1,10 +1,10 @@
 import apiClient from "@/lib/axios";
 import { API_ROUTES } from "@/constants";
-import type { DashboardResponse, CustomersResponse } from "../types";
+import type { DashboardData, CustomersResponse } from "../types";
 
 export const adminApi = {
-  getDashboard: async (): Promise<DashboardResponse> => {
-    const { data } = await apiClient.get<DashboardResponse>("/admin/dashboard");
+  getDashboard: async (): Promise<DashboardData> => {
+    const { data } = await apiClient.get<DashboardData>("/admin/dashboard");
     return data;
   },
 

@@ -12,9 +12,9 @@ export function useCurrentUser() {
   return useQuery({
     queryKey: AUTH_QUERY_KEYS.currentUser,
     queryFn: async () => {
-      const data = await authApi.getCurrentUser();
-      setUser(data.user);
-      return data.user;
+      const user = await authApi.getCurrentUser();
+      setUser(user);
+      return user;
     },
     retry: false,
     staleTime: 5 * 60 * 1000,

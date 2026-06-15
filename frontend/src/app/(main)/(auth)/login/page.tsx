@@ -3,7 +3,7 @@ import { LoginForm } from "@/features/auth/components/login-form";
 
 export const metadata: Metadata = {
   title: "Sign In",
-  description: "Sign in to your ADIWEAR account.",
+  description: "Sign in to your HAAB account.",
 };
 
 export default function LoginPage() {

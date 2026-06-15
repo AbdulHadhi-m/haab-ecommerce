@@ -1,9 +1,41 @@
+# Dependencies
 node_modules/
-.next/
+.pnp
+.pnp.js
+
+# Build outputs
 dist/
+.next/
+out/
+
+# Environment
 .env
 .env.local
-*.log
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Testing
 coverage/
-.turbo/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Docker
+docker-compose.override.yml
+
+# Misc
+*.tsbuildinfo
+next-env.d.ts

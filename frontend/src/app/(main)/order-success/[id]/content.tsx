@@ -13,7 +13,7 @@ interface OrderSuccessPageContentProps {
 
 export function OrderSuccessPageContent({ id }: OrderSuccessPageContentProps) {
   const { data, isLoading } = useOrder(id);
-  const orderNumber = data?.data?.orderNumber;
+  const orderNumber = data?.orderNumber;
 
   return (
     <PageContainer as="main" className="flex min-h-[70vh] items-center justify-center py-16">

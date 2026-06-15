@@ -3,24 +3,24 @@ import type { Coupon, CreateCouponPayload, UpdateCouponPayload, ValidateCouponPa
 
 export const couponApi = {
   validateCoupon: async (payload: ValidateCouponPayload): Promise<ValidateCouponResult> => {
-    const { data } = await apiClient.post<{ success: boolean; data: ValidateCouponResult }>("/coupons/validate", payload);
-    return data.data;
+    const { data } = await apiClient.post<ValidateCouponResult>("/coupons/validate", payload);
+    return data;
   },
-  getAll: async (page?: number, limit?: number): Promise<{ coupons: Coupon[]; pagination: any }> => {
-    const { data } = await apiClient.get("/coupons", { params: { page, limit } });
-    return data.data;
+  getAll: async (page?: number, limit?: number): Promise<{ coupons: Coupon[]; total: number; page: number; totalPages: number }> => {
+    const { data } = await apiClient.get<{ coupons: Coupon[]; total: number; page: number; totalPages: number }>("/coupons", { params: { page, limit } });
+    return data;
   },
   getById: async (id: string): Promise<Coupon> => {
-    const { data } = await apiClient.get(`/coupons/${id}`);
-    return data.data;
+    const { data } = await apiClient.get<Coupon>(`/coupons/${id}`);
+    return data;
   },
   create: async (payload: CreateCouponPayload): Promise<Coupon> => {
-    const { data } = await apiClient.post("/coupons", payload);
-    return data.data;
+    const { data } = await apiClient.post<Coupon>("/coupons", payload);
+    return data;
   },
   update: async (id: string, payload: UpdateCouponPayload): Promise<Coupon> => {
-    const { data } = await apiClient.put(`/coupons/${id}`, payload);
-    return data.data;
+    const { data } = await apiClient.put<Coupon>(`/coupons/${id}`, payload);
+    return data;
   },
   delete: async (id: string): Promise<void> => {
     await apiClient.delete(`/coupons/${id}`);

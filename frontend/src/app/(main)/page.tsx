@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { HeroBanner } from "@/features/products/components/hero-banner";
 import { FeaturedProductsSection } from "@/features/products/components/featured-products-section";
-import { NewsletterSection } from "@/features/products/components/newsletter-section";
+import { DynamicNewsletterSection } from "@/shared/lib/dynamic-imports";
 import { SITE } from "@/constants";
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function HomePage() {
     <main>
       <HeroBanner />
       <FeaturedProductsSection />
-      <NewsletterSection />
+      <DynamicNewsletterSection />
     </main>
   );
 }

@@ -37,7 +37,7 @@ export function RazorpayPaymentButton({ orderId, amount, prefill, onSuccess, onE
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
         amount: amount * 100,
         currency: "INR",
-        name: "ADIWEAR",
+        name: "HAAB",
         order_id: intent.razorpayOrderId,
         prefill: {
           name: prefill.name,

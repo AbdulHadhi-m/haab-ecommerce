@@ -12,13 +12,27 @@
     "lint:frontend": "npm run lint --workspace=frontend",
     "lint:backend": "npm run lint --workspace=backend",
     "lint": "npm run lint:frontend && npm run lint:backend",
-    "clean": "rm -rf frontend/.next frontend/node_modules backend/dist backend/node_modules node_modules"
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck:frontend": "npm run typecheck --workspace=frontend",
+    "typecheck:backend": "npm run typecheck --workspace=backend",
+    "typecheck": "npm run typecheck:frontend && npm run typecheck:backend",
+    "test:frontend": "npm test --workspace=frontend",
+    "test:backend": "npm test --workspace=backend",
+    "test": "npm run test:frontend && npm run test:backend",
+    "clean": "rm -rf frontend/.next frontend/node_modules backend/dist backend/node_modules node_modules",
+    "prepare": "husky"
   },
   "workspaces": [
     "frontend",
     "backend"
   ],
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
+    "prettier": "^3.5.3",
+    "@commitlint/cli": "^19.8.0",
+    "@commitlint/config-conventional": "^19.8.0"
   }
 }

@@ -8,7 +8,7 @@ import { EmptyOrders } from "@/features/orders/components/empty-orders";
 
 export function OrdersListPageContent() {
   const { data, isLoading } = useOrders();
-  const orders = data?.data ?? [];
+  const orders = data ?? [];
 
   return (
     <PageContainer as="main" className="py-8 sm:py-12">

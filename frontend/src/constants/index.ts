@@ -1,5 +1,5 @@
 export const SITE = {
-  name: "ADIWEAR",
+  name: "HAAB",
   tagline: "Premium Sportswear",
   description: "Premium sportswear and lifestyle apparel. Inspired by heritage, built for performance.",
   url: process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",

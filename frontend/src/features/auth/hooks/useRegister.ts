@@ -26,7 +26,7 @@ export function useRegister() {
       setUser(response.user);
       queryClient.invalidateQueries({ queryKey: AUTH_QUERY_KEYS.currentUser });
       toast.success("Account created!", {
-        description: "Welcome to ADIWEAR. You are now logged in.",
+        description: "Welcome to HAAB. You are now logged in.",
       });
       router.push("/");
     },

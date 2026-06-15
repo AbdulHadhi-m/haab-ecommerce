@@ -34,7 +34,7 @@ export function OrderDetailPageContent({ id }: OrderDetailPageContentProps) {
     );
   }
 
-  if (error || !data?.data) {
+  if (error || !data) {
     return (
       <PageContainer as="main" className="py-8 sm:py-12">
         <EmptyState
@@ -50,7 +50,7 @@ export function OrderDetailPageContent({ id }: OrderDetailPageContentProps) {
     );
   }
 
-  const order = data.data;
+  const order = data;
 
   return (
     <PageContainer as="main" className="py-8 sm:py-12">

@@ -75,7 +75,7 @@ export default function AdminCategoriesPage() {
         <div className="flex items-center gap-2">
           <Input id={`edit-name-${c._id}`} defaultValue={c.name} className="h-8 w-48 text-sm" />
           <Button size="sm" variant="black" onClick={() => onEdit(c._id)} disabled={submitting} className="text-xs">Save</Button>
-          <Button size="sm" variant="ghost" onClick={() => setEditingId(null)} className="text-xs">Cancel</Button>
+          <Button size="sm" variant="ghost" onClick={() => setEditingId(null)} className="text-xs text-brand-500">Cancel</Button>
         </div>
       ) : (
         <span className="font-medium">{c.name}</span>
@@ -85,10 +85,10 @@ export default function AdminCategoriesPage() {
     { key: "status", header: "Status", render: (c) => <StatusBadge status={c.isActive ? "active" : "inactive"} /> },
     { key: "actions", header: "Actions", className: "text-right", render: (c) => (
       <div className="flex justify-end gap-2">
-        <button onClick={() => setEditingId(c._id)} className="flex h-8 w-8 items-center justify-center text-brand-400 hover:text-brand-700">
+        <button onClick={() => setEditingId(c._id)} className="flex h-8 w-8 items-center justify-center text-brand-500 hover:text-brand-700">
           <Edit className="h-4 w-4" />
         </button>
-        <button onClick={() => setDeleteId(c._id)} className="flex h-8 w-8 items-center justify-center text-brand-400 hover:text-red-600">
+        <button onClick={() => setDeleteId(c._id)} className="flex h-8 w-8 items-center justify-center text-brand-500 hover:text-red-600">
           <Trash2 className="h-4 w-4" />
         </button>
       </div>

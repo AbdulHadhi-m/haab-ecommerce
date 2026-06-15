@@ -3,11 +3,11 @@ import type { CreatePaymentIntentPayload, PaymentIntentResult, VerifyPaymentPayl
 
 export const paymentApi = {
   createPaymentIntent: async (payload: CreatePaymentIntentPayload): Promise<PaymentIntentResult> => {
-    const { data } = await apiClient.post<{ success: boolean; data: PaymentIntentResult }>(
+    const { data } = await apiClient.post<PaymentIntentResult>(
       "/payments/create-payment-intent",
       payload,
     );
-    return data.data;
+    return data;
   },
   verifyPayment: async (payload: VerifyPaymentPayload): Promise<void> => {
     await apiClient.post("/payments/verify", payload);

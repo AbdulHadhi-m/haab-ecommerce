@@ -20,10 +20,10 @@ export default function DashboardPage() {
     );
   }
 
-  const stats = data?.data?.stats;
-  const recentOrders = data?.data?.recentOrders ?? [];
-  const latestCustomers = data?.data?.latestCustomers ?? [];
-  const ordersTrend = data?.data?.ordersTrend ?? [];
+  const stats = data?.stats;
+  const recentOrders = data?.recentOrders ?? [];
+  const latestCustomers = data?.latestCustomers ?? [];
+  const ordersTrend = data?.ordersTrend ?? [];
 
   return (
     <div>

@@ -3,7 +3,7 @@ import { RegisterForm } from "@/features/auth/components/register-form";
 
 export const metadata: Metadata = {
   title: "Create Account",
-  description: "Create your ADIWEAR account.",
+  description: "Create your HAAB account.",
 };
 
 export default function RegisterPage() {
@@ -12,7 +12,7 @@ export default function RegisterPage() {
       <div className="w-full max-w-md">
         <div className="mb-10 text-center">
           <h1 className="text-4xl font-bold tracking-tight text-brand-900 sm:text-5xl">
-            Join ADIWEAR
+            Join HAAB
           </h1>
           <p className="mt-3 text-sm text-brand-600">
             Create an account and start shopping

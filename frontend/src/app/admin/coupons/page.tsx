@@ -242,13 +242,13 @@ export default function AdminCouponsPage() {
         <div className="flex justify-end gap-2">
           <button
             onClick={() => { setEditCoupon(c); setShowForm(true); }}
-            className="flex h-8 w-8 items-center justify-center text-brand-400 hover:text-brand-700"
+            className="flex h-8 w-8 items-center justify-center text-brand-500 hover:text-brand-700"
           >
             <Edit className="h-4 w-4" />
           </button>
           <button
             onClick={() => setDeleteId(c._id)}
-            className="flex h-8 w-8 items-center justify-center text-brand-400 hover:text-red-600"
+            className="flex h-8 w-8 items-center justify-center text-brand-500 hover:text-red-600"
           >
             <Trash2 className="h-4 w-4" />
           </button>

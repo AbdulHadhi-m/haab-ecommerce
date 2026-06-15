@@ -6,6 +6,8 @@ export function asyncHandler(fn: (req: Request, res: Response, next: NextFunctio
   };
 }
 
+export * from "./pagination";
+
 export function generateSlug(text: string): string {
   return text
     .toLowerCase()

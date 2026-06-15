@@ -31,8 +31,8 @@ export const authApi = {
     await apiClient.post(API_ROUTES.AUTH.LOGOUT);
   },
 
-  getCurrentUser: async (): Promise<{ user: User }> => {
-    const { data } = await apiClient.get<{ user: User }>(
+  getCurrentUser: async (): Promise<User> => {
+    const { data } = await apiClient.get<User>(
       API_ROUTES.AUTH.ME,
     );
     return data;

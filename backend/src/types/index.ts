@@ -2,22 +2,21 @@ export interface PaginationQuery {
   page?: string;
   limit?: string;
   sort?: string;
-  order?: "asc" | "desc";
 }
 
 export interface ApiResponse<T> {
   success: boolean;
-  data: T;
   message?: string;
+  data: T;
 }
 
-export interface PaginatedResponse<T> {
-  success: boolean;
-  data: T[];
+export interface PaginatedResponse<T> extends ApiResponse<T> {
   pagination: {
     page: number;
     limit: number;
     total: number;
-    totalPages: number;
+    pages: number;
+    hasNext: boolean;
+    hasPrev: boolean;
   };
 }

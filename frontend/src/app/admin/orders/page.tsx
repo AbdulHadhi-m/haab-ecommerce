@@ -8,34 +8,23 @@ import { formatPrice } from "@/shared/lib/utils";
 import { DataTable, type Column } from "@/features/admin/components/data-table";
 import { SearchBar } from "@/features/admin/components/search-bar";
 import { StatusBadge } from "@/features/admin/components/status-badge";
-import { AdminPagination } from "@/features/admin/components/admin-pagination";
 import { TableSkeleton } from "@/features/admin/components/skeletons";
 import { toast } from "sonner";
 import type { Order, OrderStatus } from "@/features/orders/types";
 
 const STATUS_OPTIONS: OrderStatus[] = ["pending", "confirmed", "processing", "shipped", "delivered", "cancelled"];
 
-interface OrdersResponse {
-  success: boolean;
-  data: Order[];
-  meta: { page: number; limit: number; total: number; totalPages: number };
-}
-
 export default function AdminOrdersPage() {
   const queryClient = useQueryClient();
-  const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
 
-  const { data, isLoading } = useQuery<OrdersResponse>({
-    queryKey: ["admin", "orders", page, search],
+  const { data: orders, isLoading } = useQuery<Order[]>({
+    queryKey: ["admin", "orders", search],
     queryFn: async () => {
-      const res = await apiClient.get("/orders/admin/all", { params: { page, limit: 10, search: search || undefined } });
+      const res = await apiClient.get("/orders/admin/all", { params: { search: search || undefined } });
       return res.data;
     },
   });
-
-  const orders = data?.data ?? [];
-  const meta = data?.meta;
 
   async function updateStatus(id: string, status: OrderStatus) {
     try {
@@ -98,20 +87,13 @@ export default function AdminOrdersPage() {
       <h1 className="mb-6 text-2xl font-bold tracking-tight">Orders</h1>
 
       <div className="mb-4">
-        <SearchBar value={search} onChange={(v) => { setSearch(v); setPage(1); }} placeholder="Search orders..." />
+        <SearchBar value={search} onChange={setSearch} placeholder="Search orders..." />
       </div>
 
       {isLoading ? (
         <TableSkeleton cols={5} />
       ) : (
-        <>
-          <DataTable columns={columns} data={orders} keyExtractor={(o) => o._id} />
-          {meta && (
-            <div className="mt-6">
-              <AdminPagination currentPage={meta.page} totalPages={meta.totalPages} onPageChange={setPage} />
-            </div>
-          )}
-        </>
+        <DataTable columns={columns} data={orders ?? []} keyExtractor={(o) => o._id} />
       )}
     </div>
   );

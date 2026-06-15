@@ -23,7 +23,7 @@ export function useLogin() {
       toast.success("Welcome back!", {
         description: "You have been logged in successfully.",
       });
-      router.push("/");
+      router.push(response.user.role === "admin" ? "/admin" : "/");
     },
     onError: (error: unknown) => {
       const message =

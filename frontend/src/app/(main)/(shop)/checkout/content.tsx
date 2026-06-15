@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PageContainer } from "@/shared/components/elements/page-container";
 import { CheckoutSteps, ShippingForm, PaymentMethod, ReviewOrder, OrderSummary } from "@/features/checkout/components";
@@ -49,15 +49,6 @@ export function CheckoutPageContent() {
   const tax = Math.round(subtotal * 0.08 * 100) / 100;
   const orderTotal = Math.round((subtotal + shippingFee + tax - discount) * 100) / 100;
 
-  if (items.length === 0 && currentStep === 0) {
-    return (
-      <PageContainer as="main" className="py-8 sm:py-12">
-        <h1 className="mb-8 text-3xl font-bold tracking-tight sm:text-4xl">Checkout</h1>
-        <EmptyCart />
-      </PageContainer>
-    );
-  }
-
   function handleShippingNext(data: ShippingFormData) {
     setShippingData(data);
     nextStep();
@@ -68,30 +59,41 @@ export function CheckoutPageContent() {
     nextStep();
   }
 
-  const handleApplyDiscount = useCallback((amount: number, code: string) => {
+  function handleApplyDiscount(amount: number, code: string) {
     setDiscount(amount);
     setCouponCode(code);
-  }, []);
+  }
 
-  const handleRemoveDiscount = useCallback(() => {
+  function handleRemoveDiscount() {
     setDiscount(0);
     setCouponCode(undefined);
-  }, []);
+  }
 
-  const handleOrderSuccess = useCallback(() => {
+  function handleOrderSuccess() {
     clearCart();
     reset();
     toast.success("Payment successful!", {
       description: "Your order has been placed successfully.",
     });
-    router.push(`/order-success/${orderId}`);
-  }, [clearCart, reset, router, orderId]);
+    if (orderId) {
+      router.push(`/order-success/${orderId}`);
+    }
+  }
 
-  const handlePaymentError = useCallback((error: string) => {
+  function handlePaymentError(error: string) {
     setPaymentStep("idle");
     setPaymentError(error);
     toast.error("Payment failed", { description: error });
-  }, []);
+  }
+
+  if (items.length === 0 && currentStep === 0) {
+    return (
+      <PageContainer as="main" className="py-8 sm:py-12">
+        <h1 className="mb-8 text-3xl font-bold tracking-tight sm:text-4xl">Checkout</h1>
+        <EmptyCart />
+      </PageContainer>
+    );
+  }
 
   async function handlePlaceOrder() {
     setPaymentError(null);
@@ -110,7 +112,7 @@ export function CheckoutPageContent() {
         discount: discount > 0 ? discount : undefined,
       });
 
-      const newOrderId = response.data._id;
+      const newOrderId = response._id;
       setOrderId(newOrderId);
 
       if (paymentMethod === "cod") {
@@ -143,7 +145,7 @@ export function CheckoutPageContent() {
           key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
           amount: Math.round(orderTotal * 100),
           currency: "INR",
-          name: "ADIWEAR",
+          name: "HAAB",
           order_id: intent.razorpayOrderId,
           prefill: {
             name: shippingData.fullName,

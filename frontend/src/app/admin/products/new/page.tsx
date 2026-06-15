@@ -12,6 +12,8 @@ import { Input } from "@/shared/components/ui/input";
 import { toast } from "sonner";
 import apiClient from "@/lib/axios";
 import { useCategories } from "@/features/products/hooks/useCategories";
+import { ImageUpload } from "@/features/admin/components/image-upload";
+import type { ProductImage } from "@/features/products/types";
 
 const productSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -30,6 +32,7 @@ type ProductForm = z.infer<typeof productSchema>;
 export default function NewProductPage() {
   const router = useRouter();
   const { data: categoriesData } = useCategories();
+  const [images, setImages] = useState<ProductImage[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
   const {
@@ -44,7 +47,7 @@ export default function NewProductPage() {
   async function onSubmit(values: ProductForm) {
     setSubmitting(true);
     try {
-      await apiClient.post("/products", values);
+      await apiClient.post("/products", { ...values, images });
       toast.success("Product created successfully");
       router.push("/admin/products");
     } catch {
@@ -104,6 +107,9 @@ export default function NewProductPage() {
               ))}
             </select>
             {errors.category && <p className="text-xs text-red-500">{errors.category.message}</p>}
+          </div>
+          <div className="sm:col-span-2">
+            <ImageUpload images={images} onChange={setImages} />
           </div>
           <div className="flex items-center gap-2 sm:col-span-2">
             <input type="checkbox" id="featured" {...register("featured")} className="h-4 w-4" />

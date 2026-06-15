@@ -20,10 +20,10 @@ export default function AnalyticsPage() {
     );
   }
 
-  const stats = data?.data?.stats;
-  const ordersTrend = data?.data?.ordersTrend ?? [];
-  const topProducts = data?.data?.topProducts ?? [];
-  const recentOrders = data?.data?.recentOrders ?? [];
+  const stats = data?.stats;
+  const ordersTrend = data?.ordersTrend ?? [];
+  const topProducts = data?.topProducts ?? [];
+  const recentOrders = data?.recentOrders ?? [];
 
   return (
     <div>

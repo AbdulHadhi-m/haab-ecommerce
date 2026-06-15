@@ -89,6 +89,9 @@ const orderSchema = new Schema<IOrder>(
   },
 );
 
+orderSchema.index({ customer: 1, createdAt: -1 });
+orderSchema.index({ orderStatus: 1, createdAt: -1 });
 orderSchema.index({ createdAt: -1 });
+orderSchema.index({ "payment.method": 1, "payment.status": 1 });
 
 export const Order = mongoose.model<IOrder>("Order", orderSchema);

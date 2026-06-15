@@ -26,7 +26,7 @@ export const emailService = {
       .join("");
 
     await transporter.sendMail({
-      from: `"ADIWEAR" <${config.smtpFrom}>`,
+      from: `"HAAB" <${config.smtpFrom}>`,
       to,
       subject: `Order Confirmed - ${orderNumber}`,
       html: `
@@ -48,7 +48,7 @@ export const emailService = {
     newStatus: string,
   ): Promise<void> {
     await transporter.sendMail({
-      from: `"ADIWEAR" <${config.smtpFrom}>`,
+      from: `"HAAB" <${config.smtpFrom}>`,
       to,
       subject: `Order Update - ${orderNumber}`,
       html: `

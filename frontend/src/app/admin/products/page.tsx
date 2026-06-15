@@ -78,17 +78,17 @@ export default function AdminProductsPage() {
         <div className="flex justify-end gap-2">
           <Link
             href={`/products/${p.slug}`}
-            className="flex h-8 w-8 items-center justify-center text-brand-400 hover:text-brand-700"
+            className="flex h-8 w-8 items-center justify-center text-brand-500 hover:text-brand-700"
           >
             <ExternalLink className="h-4 w-4" />
           </Link>
           <Link
             href={`/admin/products/${p._id}/edit`}
-            className="flex h-8 w-8 items-center justify-center text-brand-400 hover:text-brand-700"
+            className="flex h-8 w-8 items-center justify-center text-brand-500 hover:text-brand-700"
           >
             <Edit className="h-4 w-4" />
           </Link>
-          <button className="flex h-8 w-8 items-center justify-center text-brand-400 hover:text-red-600">
+          <button className="flex h-8 w-8 items-center justify-center text-brand-500 hover:text-red-600">
             <Trash2 className="h-4 w-4" />
           </button>
         </div>

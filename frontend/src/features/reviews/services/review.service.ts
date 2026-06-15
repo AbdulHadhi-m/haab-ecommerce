@@ -3,21 +3,21 @@ import type { CreateReviewPayload, UpdateReviewPayload, ReviewQueryParams, Pagin
 
 export const reviewApi = {
   getProductReviews: async (productId: string, params?: ReviewQueryParams): Promise<PaginatedReviews> => {
-    const { data } = await apiClient.get<{ success: boolean; data: PaginatedReviews }>(
+    const { data } = await apiClient.get<PaginatedReviews>(
       `/reviews/products/${productId}`,
       { params },
     );
-    return data.data;
+    return data;
   },
 
   createReview: async (payload: CreateReviewPayload): Promise<Review> => {
-    const { data } = await apiClient.post<{ success: boolean; data: Review }>("/reviews", payload);
-    return data.data;
+    const { data } = await apiClient.post<Review>("/reviews", payload);
+    return data;
   },
 
   updateReview: async (reviewId: string, payload: UpdateReviewPayload): Promise<Review> => {
-    const { data } = await apiClient.put<{ success: boolean; data: Review }>(`/reviews/${reviewId}`, payload);
-    return data.data;
+    const { data } = await apiClient.put<Review>(`/reviews/${reviewId}`, payload);
+    return data;
   },
 
   deleteReview: async (reviewId: string): Promise<void> => {
@@ -25,7 +25,7 @@ export const reviewApi = {
   },
 
   getMyReviews: async (params?: ReviewQueryParams): Promise<PaginatedReviews> => {
-    const { data } = await apiClient.get<{ success: boolean; data: PaginatedReviews }>("/reviews/my-reviews", { params });
-    return data.data;
+    const { data } = await apiClient.get<PaginatedReviews>("/reviews/my-reviews", { params });
+    return data;
   },
 };

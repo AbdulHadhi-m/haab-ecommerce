@@ -14,6 +14,8 @@ import apiClient from "@/lib/axios";
 import { useProduct } from "@/features/products/hooks/useProduct";
 import { useCategories } from "@/features/products/hooks/useCategories";
 import { ProductFormSkeleton } from "@/features/admin/components/skeletons";
+import { ImageUpload } from "@/features/admin/components/image-upload";
+import type { ProductImage } from "@/features/products/types";
 
 const productSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -35,6 +37,7 @@ export default function EditProductPage() {
   const id = params.id as string;
   const { data: productData, isLoading: productLoading } = useProduct(id);
   const { data: categoriesData } = useCategories();
+  const [images, setImages] = useState<ProductImage[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
   const {
@@ -49,6 +52,7 @@ export default function EditProductPage() {
   useEffect(() => {
     if (productData?.data) {
       const p = productData.data;
+      setImages(p.images ?? []);
       reset({
         name: p.name,
         description: p.description,
@@ -66,7 +70,7 @@ export default function EditProductPage() {
   async function onSubmit(values: ProductForm) {
     setSubmitting(true);
     try {
-      await apiClient.put(`/products/${id}`, values);
+      await apiClient.put(`/products/${id}`, { ...values, images });
       toast.success("Product updated successfully");
       router.push("/admin/products");
     } catch {
@@ -129,6 +133,9 @@ export default function EditProductPage() {
               ))}
             </select>
             {errors.category && <p className="text-xs text-red-500">{errors.category.message}</p>}
+          </div>
+          <div className="sm:col-span-2">
+            <ImageUpload images={images} onChange={setImages} />
           </div>
           <div className="flex items-center gap-6 sm:col-span-2">
             <label className="flex items-center gap-2 text-sm">

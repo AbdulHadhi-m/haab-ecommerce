@@ -32,7 +32,16 @@ apiClient.interceptors.request.use((config) => {
 });
 
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Unwrap backend { success, data } envelope (only when no extra fields like meta)
+    if (response.data && typeof response.data === "object" && "data" in response.data) {
+      const keys = Object.keys(response.data).filter(k => k !== "success" && k !== "message");
+      if (keys.length === 1 && keys[0] === "data") {
+        response.data = response.data.data;
+      }
+    }
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
 
@@ -62,7 +71,7 @@ apiClient.interceptors.response.use(
           { withCredentials: true },
         );
 
-        const newToken: string = data.accessToken;
+        const newToken: string = data.data?.accessToken ?? data.accessToken;
         localStorage.setItem("accessToken", newToken);
         processQueue(null, newToken);
 

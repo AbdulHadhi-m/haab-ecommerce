@@ -1,6 +1,6 @@
 import { Product } from "../product.model";
-import { IProduct } from "../interfaces";
-import { CreateProductInput, UpdateProductInput, ProductFilter, ProductSort } from "../types";
+import type { IProduct } from "../interfaces";
+import type { CreateProductInput, UpdateProductInput, ProductFilter, ProductSort } from "../types";
 
 export const productRepository = {
   async create(input: CreateProductInput): Promise<IProduct> {
@@ -13,11 +13,14 @@ export const productRepository = {
     skip: number,
     limit: number,
   ): Promise<IProduct[]> {
-    return Product.find(filter as Record<string, unknown>)
+    const products = await Product.find(filter as Record<string, unknown>)
       .populate("category", "name slug")
       .sort(sort)
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .select("-__v")
+      .lean();
+    return products as unknown as IProduct[];
   },
 
   async countAll(filter: ProductFilter): Promise<number> {
@@ -25,21 +28,31 @@ export const productRepository = {
   },
 
   async findBySlug(slug: string): Promise<IProduct | null> {
-    return Product.findOne({ slug })
-      .populate("category", "name slug");
+    const product = await Product.findOne({ slug })
+      .populate("category", "name slug")
+      .select("-__v")
+      .lean();
+    return product as unknown as IProduct | null;
   },
 
   async findById(id: string): Promise<IProduct | null> {
-    return Product.findById(id)
-      .populate("category", "name slug");
+    const product = await Product.findById(id)
+      .populate("category", "name slug")
+      .select("-__v")
+      .lean();
+    return product as unknown as IProduct | null;
   },
 
   async update(id: string, input: UpdateProductInput): Promise<IProduct | null> {
-    return Product.findByIdAndUpdate(id, input, { new: true, runValidators: true })
-      .populate("category", "name slug");
+    const product = await Product.findByIdAndUpdate(id, input, { new: true, runValidators: true })
+      .populate("category", "name slug")
+      .select("-__v")
+      .lean();
+    return product as unknown as IProduct | null;
   },
 
   async delete(id: string): Promise<IProduct | null> {
-    return Product.findByIdAndDelete(id);
+    const product = await Product.findByIdAndDelete(id).lean();
+    return product as unknown as IProduct | null;
   },
 };

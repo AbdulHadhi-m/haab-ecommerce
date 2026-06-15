@@ -21,11 +21,14 @@ interface AuthActions {
 
 type AuthStore = AuthState & AuthActions;
 
-const initialState: AuthState = {
-  user: null,
-  isAuthenticated: false,
-  isLoading: true,
-};
+function getInitialState(): AuthState {
+  if (typeof window !== "undefined" && !localStorage.getItem("accessToken")) {
+    return { user: null, isAuthenticated: false, isLoading: false };
+  }
+  return { user: null, isAuthenticated: false, isLoading: true };
+}
+
+const initialState: AuthState = getInitialState();
 
 export const useAuthStore = create<AuthStore>((set) => ({
   ...initialState,
