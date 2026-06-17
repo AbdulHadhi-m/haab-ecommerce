@@ -2,7 +2,7 @@ import apiClient from "@/lib/axios";
 import { API_ROUTES } from "@/constants";
 import type {
   ProductsResponse,
-  ProductResponse,
+  Product,
   ProductsQueryParams,
   CategoriesResponse,
 } from "../types";
@@ -31,8 +31,8 @@ export const productApi = {
     return data;
   },
 
-  getBySlug: async (slug: string): Promise<ProductResponse> => {
-    const { data } = await apiClient.get<ProductResponse>(
+  getBySlug: async (slug: string): Promise<Product> => {
+    const { data } = await apiClient.get<Product>(
       API_ROUTES.PRODUCTS.BY_SLUG(slug),
     );
     return data;

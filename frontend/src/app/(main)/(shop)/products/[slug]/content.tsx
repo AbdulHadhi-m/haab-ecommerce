@@ -26,7 +26,7 @@ export function ProductDetailContent({ slug }: ProductDetailContentProps) {
     );
   }
 
-  if (error || !data?.data) {
+  if (error || !data) {
     return (
       <PageContainer as="main" className="py-8 sm:py-12">
         <EmptyState
@@ -42,7 +42,7 @@ export function ProductDetailContent({ slug }: ProductDetailContentProps) {
     );
   }
 
-  const product = data.data;
+  const product = data;
 
   const categorySlug =
     typeof product.category === "object" && product.category !== null

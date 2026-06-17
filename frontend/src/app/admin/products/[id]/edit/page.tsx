@@ -50,19 +50,18 @@ export default function EditProductPage() {
   });
 
   useEffect(() => {
-    if (productData?.data) {
-      const p = productData.data;
-      setImages(p.images ?? []);
+    if (productData) {
+      setImages(productData.images ?? []);
       reset({
-        name: p.name,
-        description: p.description,
-        price: p.price,
-        discountPrice: p.discountPrice,
-        stock: p.stock,
-        sku: p.sku,
-        category: typeof p.category === "object" ? (p.category as { _id: string })._id : p.category,
-        featured: p.featured,
-        isActive: p.isActive,
+        name: productData.name,
+        description: productData.description,
+        price: productData.price,
+        discountPrice: productData.discountPrice,
+        stock: productData.stock,
+        sku: productData.sku,
+        category: typeof productData.category === "object" ? (productData.category as { _id: string })._id : productData.category,
+        featured: productData.featured,
+        isActive: productData.isActive,
       });
     }
   }, [productData, reset]);
@@ -81,7 +80,7 @@ export default function EditProductPage() {
   }
 
   if (productLoading) return <ProductFormSkeleton />;
-  if (!productData?.data) return <p className="text-sm text-red-500">Product not found</p>;
+  if (!productData) return <p className="text-sm text-red-500">Product not found</p>;
 
   const categories = Array.isArray(categoriesData) ? categoriesData : categoriesData?.data ?? [];
 
